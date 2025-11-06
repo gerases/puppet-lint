@@ -635,7 +635,7 @@ describe PuppetLint::Bin do
 
   context 'when overriding config file options with command line options' do
     context 'and config file sets "--only-checks=variable_contains_dash"' do
-      around(:context) do |example|
+      around(:each) do |example|
         Dir.mktmpdir do |tmpdir|
           Dir.chdir(tmpdir) do
             File.open('.puppet-lint.rc', 'wb') do |f|
