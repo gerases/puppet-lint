@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.1.1](https://github.com/puppetlabs/puppet-lint/tree/v5.1.1) - 2025-11-06
+
+[Full Changelog](https://github.com/puppetlabs/puppet-lint/compare/v5.1.0...v5.1.1)
+
+### Fixed
+
+- (CAT-2484) Prevent YAML corruption by making PuppetLint instances file-type aware [#256](https://github.com/puppetlabs/puppet-lint/pull/256) ([gavindidrichsen](https://github.com/gavindidrichsen))
+
 ## [v5.1.0](https://github.com/puppetlabs/puppet-lint/tree/v5.1.0) - 2025-09-25
 
 [Full Changelog](https://github.com/puppetlabs/puppet-lint/compare/v5.0.0...v5.1.0)
