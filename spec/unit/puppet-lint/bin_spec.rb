@@ -615,9 +615,27 @@ describe PuppetLint::Bin do
     end
   end
 
+  context 'when fixing a directory containing both .pp and .yaml files' do
+    let(:args) { ['--fix', 'spec/fixtures/test/manifests/issue_254_overwriting_yaml'] }
+
+    its(:exitstatus) { is_expected.to eq(1) }
+
+    it 'does not overwrite YAML files' do
+      yaml_file = 'spec/fixtures/test/manifests/issue_254_overwriting_yaml/class_with_dash.yaml'
+      original_yaml = File.read(yaml_file)
+
+      bin # Run the command
+
+      yaml_after = File.read(yaml_file)
+      expect(yaml_after).to eq(original_yaml)
+      expect(yaml_after).to include('classes:')
+      expect(yaml_after).not_to include('class foo-bar {')
+    end
+  end
+
   context 'when overriding config file options with command line options' do
     context 'and config file sets "--only-checks=variable_contains_dash"' do
-      around(:context) do |example|
+      around(:each) do |example|
         Dir.mktmpdir do |tmpdir|
           Dir.chdir(tmpdir) do
             File.open('.puppet-lint.rc', 'wb') do |f|

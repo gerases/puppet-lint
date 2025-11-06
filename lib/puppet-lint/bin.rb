@@ -90,9 +90,7 @@ class PuppetLint::Bin
 
         return_val = 1 if l.errors? || (l.warnings? && PuppetLint.configuration.fail_on_warnings)
 
-        next unless PuppetLint.configuration.fix && l.problems.none? { |r| r[:check] == :syntax }
-
-        File.binwrite(f, l.manifest)
+        l.write_fixes if PuppetLint.configuration.fix
       end
 
       if PuppetLint.configuration.sarif

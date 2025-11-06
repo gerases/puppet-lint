@@ -235,6 +235,42 @@ class PuppetLint
     report(@problems)
   end
 
+  # Public: Write fixes back to the file if this file type supports fixes.
+  #
+  # Returns nothing.
+  def write_fixes
+    return unless should_write_fixes?
+
+    File.binwrite(@path, @manifest)
+  end
+
+  # Internal: Determine if fixes should be written for this file.
+  #
+  # Returns true if all conditions are met for writing fixes, false otherwise.
+  def should_write_fixes?
+    # Don't write if file type doesn't support fixes
+    return false unless supports_fixes?
+
+    # Don't write if there are syntax errors (can't safely fix)
+    return false if @problems&.any? { |r| r[:check] == :syntax }
+
+    # Don't write if there's no manifest content
+    return false if @manifest.nil? || @manifest.empty?
+
+    true
+  end
+
+  # Public: Determine if this file type supports automatic fixes.
+  #
+  # Returns true if fixes are supported for this file type, false otherwise.
+  def supports_fixes?
+    return false if @path.nil?
+
+    # Only .pp files support fixes currently
+    # YAML files and other types may support fixes in the future
+    File.extname(@path).match?(%r{\.pp$}i)
+  end
+
   # Public: Define a new check.
   #
   # name  - A unique name for the check as a Symbol.
